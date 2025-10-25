@@ -1,66 +1,55 @@
-/* ==== Brand palette (no Tailwind) ==== */
-:root{
-  --linen: #FDFAF6;   /* page bg */
-  --cream: #FAF1E6;   /* fields */
-  --mist:  #E4EFE7;   /* subtle bg */
-  --sage:  #99BC85;   /* primary */
-  --ink:   #1E1E1E;   /* text */
-  --muted: #6B7280;   /* secondary text */
+@import "tailwindcss";
 
-  --radius: 16px;
-  --shadow: 0 10px 24px rgba(0,0,0,.08);
+/* class-based dark mode: <html class="dark"> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: .5rem;
+  --radius-md: .75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+
+  /* ---------- LIGHT THEME ---------- */
+  --color-bg:        #FDFAF6; /* app background */
+  --color-surface:   #FDFAF6; /* page surface (same as bg) */
+  --color-card:      #FAF1E6; /* interview type cards */
+  --color-muted:     #E4EFE7; /* subtle accents, hovers */
+  --color-primary:   #99BC85; /* buttons, highlights */
+  --color-primary-600:#7CA56A;/* hover state (slightly darker) */
+  --color-primary-700:#5E8C52;/* active state */
+
+  /* Ink = text colors (navbar text = black) */
+  --color-ink:        #000000; /* primary text */
+  --color-ink-muted:  #3f3f3f; /* secondary text */
+
+  /* Borders & rings */
+  --color-border:     color-mix(in oklch, #000 8%, #FDFAF6);
+  --color-ring:       var(--color-primary);
 }
 
-*{box-sizing:border-box}
-html, body, #root{height:100%}
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  background: var(--linen);
-  color: var(--ink);
+/* Map theme vars to the actual DOM so utilities pick them up */
+@layer theme {
+  :root, :host {
+    background: var(--color-bg);
+    color: var(--color-ink);
+  }
+
+  /* ---------- DARK THEME ---------- */
+  @variant dark {
+    --color-bg:        #0f1310;
+    --color-surface:   #151a16;
+    --color-card:      #1a201b;
+    --color-muted:     #223126;
+    --color-primary:   #8ECF9B;  /* lift green for contrast on dark */
+    --color-primary-600:#77b986;
+    --color-primary-700:#5da06f;
+
+    --color-ink:       #F6F9F4;
+    --color-ink-muted: #D2DED0;
+
+    --color-border:    color-mix(in oklch, #fff 14%, transparent);
+    --color-ring:      var(--color-primary);
+  }
 }
-
-/* Layout */
-.container{max-width: 1100px; margin: 0 auto; padding: 24px;}
-.card{background:#fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px;}
-.row{display:flex; gap:12px; align-items:center}
-.grid{display:grid; gap:20px}
-.grid-3{grid-template-columns: repeat(3, minmax(0,1fr));}
-
-/* Components */
-.btn{
-  display:inline-flex; align-items:center; justify-content:center;
-  background: var(--sage); color:#fff; border:none; cursor:pointer;
-  padding: 12px 20px; border-radius: var(--radius); font-weight:600;
-}
-.btn.alt{ background: var(--mist); color: var(--ink); }
-.btn:disabled{ opacity:.6; cursor:not-allowed; }
-
-.input{
-  width:100%; padding:12px 14px; border-radius: var(--radius);
-  border:1px solid transparent; background: var(--cream); color: var(--ink);
-}
-.input:focus{ outline: none; border-color: var(--sage); }
-
-/* Navbar */
-.navbar{position:sticky; top:0; backdrop-filter: blur(8px); background: color-mix(in srgb, var(--linen) 80%, transparent); z-index:40;}
-.navbar-inner{max-width:1100px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between;}
-.nav-links a{margin-left:18px; color:inherit; text-decoration:none}
-.nav-links a:hover{text-decoration:underline}
-
-/* Choice cards */
-.choice{cursor:pointer; border:2px solid transparent}
-.choice:hover{border-color: var(--sage);}
-.choice.active{border-color: var(--sage); box-shadow: var(--shadow);}
-
-/* AI speaking circle */
-.ai-bubble{
-  width:176px; height:176px; border-radius:999px;
-  background: linear-gradient(135deg, var(--sage), var(--mist));
-  transition: box-shadow .4s ease;
-}
-.ai-bubble.speaking{ box-shadow: 0 0 0 12px rgba(153,188,133,.25); }
-
-/* Webcam thumb
-.webcam{ position: fixed; right: 16px; bottom: 16px; z-index: 50; }
-.webcam video{ width: 240px; height: 160px; background: #000; border-radius: 14px; } */
