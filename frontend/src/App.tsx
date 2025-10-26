@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import InterviewStart from "./pages/InterviewStart";
 import InterviewPrep from "./pages/InterviewPrep";
 import Interview from "./pages/Interview";
+import TechnicalInterview from "./pages/TechnicalInterview";
 import NavBar from "./components/NavBar";
 import "./index.css";
 
@@ -16,6 +17,8 @@ export default function App() {
           <Route path="/start" element={<InterviewStart />} />
           <Route path="/prep" element={<InterviewPrep />} />
           <Route path="/interview" element={<Interview />} />
+          <Route path="/interview/tech" element={<TechnicalInterview />} /> {/* ← add */}
+
         </Routes>
       </main>
     </BrowserRouter>
