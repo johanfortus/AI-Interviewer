@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import RoleForm from "./pages/RoleForm";
-// import InterviewType from "./pages/InterviewType";
-// import InterviewScreen from "./pages/InterviewScreen";
+import InterviewStart from "./pages/InterviewStart";
+import InterviewPrep from "./pages/InterviewPrep";
+import Interview from "./pages/Interview";
 import NavBar from "./components/NavBar";
 import "./index.css";
 
@@ -13,9 +13,9 @@ export default function App() {
       <main className="max-w-6xl mx-auto p-6 md:p-10">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/role" element={<RoleForm />} />
-          {/* <Route path="/types" element={<InterviewType />} />
-          <Route path="/interview" element={<InterviewScreen />} /> */}
+          <Route path="/start" element={<InterviewStart />} />
+          <Route path="/prep" element={<InterviewPrep />} />
+          <Route path="/interview" element={<Interview />} />
         </Routes>
       </main>
     </BrowserRouter>
