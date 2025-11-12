@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 type InterviewType = "tech" | "hr" | "em";
 
-const TYPE_MAP: Record<InterviewType, "technical" | "behavioral" | "manager"> = {
-  tech: "technical",
-  hr: "behavioral",
-  em: "manager",
+const TYPE_MAP: Record<InterviewType, "Mixed" | "Behavioral" | "Engineering Manager"> = {
+  tech: "Mixed",
+  hr: "Behavioral",
+  em: "Engineering Manager",
 };
 
 const TYPES = [
@@ -50,8 +50,32 @@ export default function RoleForm() {
     }, 10);
   }
 
-  function handleStart() {
-  if (!ready || !type) return;
+  async function handleStart() {
+  if (!ready || !type || !resume) return;
+
+  const formData = new FormData();
+  formData.append("file", resume);
+
+  const parseResume = await fetch("http://localhost:8000/api/parse_resume", {
+    method: "POST",
+    body: formData,
+  });
+
+  const { profile } = await parseResume.json();
+
+  const questionRes = await fetch("http://localhost:8000/api/generate_questions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      profile,
+      role,
+      company,
+      interview_type: TYPE_MAP[type],
+    }),
+  });
+
+  const questions = await questionRes.json();
+  console.log("questions: ", questions);
 
   const commonState = {
     name,
