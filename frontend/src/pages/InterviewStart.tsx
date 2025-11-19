@@ -82,6 +82,7 @@ export default function RoleForm() {
     company,
     role,
     resumeName: resume?.name ?? null,
+    questions: questions,
   };
 
   if (type === "tech") {

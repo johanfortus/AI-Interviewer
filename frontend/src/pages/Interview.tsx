@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import WebcamPeek from "../components/WebcamPeek";
+import flattenQuestions from "../utils/flattenQuestions";
+
+type InterviewType = "Mixed" | "Behavioral" | "Engineering Manager";
 
 const SAMPLE_QS: Record<string, string[]> = {
-  technical: [
+  "Engineering Manager": [
     "Walk me through a system you built end-to-end. What trade-offs did you make?",
     "How would you design a rate limiter for an API used by millions?",
   ],
-  behavioral: [
+  "Behavioral": [
     "Tell me about a time you faced a difficult teammate. What did you do?",
     "Describe a time you influenced a decision without authority.",
   ],
-  manager: [
+  "Mixed": [
     "How do you balance roadmap priorities with urgent interrupts?",
     "Tell me about a tough performance conversation and the outcome.",
   ],
@@ -19,12 +22,21 @@ const SAMPLE_QS: Record<string, string[]> = {
 
 export default function InterviewScreen() {
   const { state } = useLocation() as any;
-  const type: "technical" | "behavioral" | "manager" =
-    state?.type || "behavioral";
+  const type: InterviewType = state?.type || "Behavioral";
+  const questionsData = state?.questions;
+  
   const [idx, setIdx] = useState(0);
   const [speaking, setSpeaking] = useState(true);
 
-  const qs = SAMPLE_QS[type] ?? SAMPLE_QS.behavioral;
+  let qs;
+  const generated = flattenQuestions(questionsData, type);
+
+  if (Array.isArray(generated) && generated.length > 0) {
+    qs = generated;
+  }
+  else {
+    qs = SAMPLE_QS[type] ?? SAMPLE_QS["Behavioral"];
+  }
 
   useEffect(() => {
     const t = setInterval(() => setSpeaking((s) => !s), 1000);
