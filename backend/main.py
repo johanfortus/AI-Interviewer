@@ -6,6 +6,7 @@ from typing import List, Optional, Literal, Dict
 from dotenv import load_dotenv
 from openai import OpenAI
 from PyPDF2 import PdfReader
+import requests
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -268,3 +269,18 @@ async def generate_questions(payload: GenerateQuestionsRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Question Generation Failed: {e}")
+
+
+@app.get("/token")
+def get_session_token():
+    url = "https://api.openai.com/v1/realtime/calls"
+    headers = {
+        "Authorization": f"Bearer {OPENAI_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "model": "gpt-4o-realtime-preview-2024-10-01",
+        "voice": "verse"
+    }
+    response = requests.post(url, headers=headers, json=data)
+    return response.json()
